@@ -1,11 +1,38 @@
 extends ../../layouts/default.pug
 include ../../mixins/alert.pug
 
-
 block main
   +alert-success(3000)
   +alert-error(5000)
-  h1 Dashboard Page
-  div #{user}
-  hr
-  div #{role.permissions.length}
+
+  .container-fluid.py-3
+    h1.mb-4 Dashboard
+
+    .row
+      .col-md-3.mb-3
+        .card.text-white.bg-primary
+          .card-body
+            h5.card-title Đơn hàng
+            h2.card-text #{orderCount}
+            p.card-text Tổng số đơn hàng
+
+      .col-md-3.mb-3
+        .card.text-white.bg-success
+          .card-body
+            h5.card-title Sản phẩm
+            h2.card-text #{productCount}
+            p.card-text Tổng số sản phẩm
+
+      .col-md-3.mb-3
+        .card.text-white.bg-info
+          .card-body
+            h5.card-title Tài khoản
+            h2.card-text #{accountCount}
+            p.card-text Tổng số tài khoản
+
+      .col-md-3.mb-3
+        .card.text-white.bg-warning
+          .card-body
+            h5.card-title Doanh thu
+            h2.card-text #{totalRevenue} $
+            p.card-text Tổng doanh thu

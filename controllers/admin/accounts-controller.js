@@ -47,6 +47,12 @@ module.exports.createAccount = async (req, res) => {
   }
   else {
     req.body.password = md5(req.body.password);
+    
+    // Xóa avatar nếu rỗng để dùng default từ schema
+    if (!req.body.avatar) {
+      delete req.body.avatar;
+    }
+    
     let newAccount = new dataAccounts(req.body)
     await newAccount.save()
     req.flash('success', "Đã thêm mới tài khoản!")

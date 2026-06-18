@@ -32,8 +32,8 @@ block main
         -for(let item of records)
           td(class="text-center" )
             input(type="checkbox" data-id=item._id check-all)
-      //- Danh mục
-      +permission-CRUD("Danh mục sản phẩm", ["products-category_views", "products-category_create", "products-category_edit", "products-category_delete"], records)
+      //- Đơn hàng
+      +permission-CRUD("Quản lý đơn hàng", ["order_views", "order_create", "order_edit", "order_delete"], records)
       //- Sản phẩm
       +permission-CRUD("Sản phẩm", ["product_views", "product_create", "product_edit", "product_delete"], records)
       tr(data-name="product_recovery")
@@ -41,6 +41,8 @@ block main
         - for(let item of records)
           td(class="text-center")
             input(type="checkbox" data-id=item._id)
+      //- Danh mục
+      +permission-CRUD("Danh mục sản phẩm", ["products-category_views", "products-category_create", "products-category_edit", "products-category_delete"], records)
       //- Nhóm quyền
       +permission-CRUD("Nhóm quyền", ['role_views', 'role_create', 'role_edit', 'role_delete'], records) 
       tr(data-name='role_permission')
@@ -54,6 +56,7 @@ block main
         -for(let item of records)
           td(class="text-center")
             input(type="checkbox" data-id=item._id)
+      +permission-CRUD("Cài đặt chung", ['setting_views', 'setting_create', 'setting_edit'], records)
   form(
     id="form-change-permissions"
     method="POST"

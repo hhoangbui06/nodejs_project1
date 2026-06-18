@@ -45,7 +45,11 @@ module.exports.postOrder=async(req,res)=>{
     cart_id:cartId,
     userInfo:userInfo,
     products:products
-  }  
+  }
+  // Lưu user_id nếu người dùng đã đăng nhập
+  if(res.locals.user){
+    orderInfo.user_id = res.locals.user._id;
+  }
   const newOrder= new dataOrders(orderInfo);
 
   await newOrder.save();
@@ -58,13 +62,13 @@ module.exports.getSuccessOrder=async(req,res)=>{
   let orderId=req.params.orderId;
   let order=await dataOrders.findOne({
     _id:orderId
-  })
+  }).lean()
   for (let product of order.products){
     let productInfo=await dataProducts.findOne({
       _id:product.product_id
-    }).select("thumbnail title")
+    }).select("thumbnail title").lean()
     product.productInfo=productInfo;
-    product=setDetail.setNewPriceProduct(product);
+    product.priceNew=Math.round(product.price*(100-product.discountPercentage)/100);
     product.totalPrice=product.quantity*product.priceNew
   }
   order.totalPrice=order.products.reduce((total, item)=>{

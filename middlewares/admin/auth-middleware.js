@@ -1,5 +1,6 @@
 const dataAccounts = require('../../models/account-models')
 const dataRoles = require('../../models/role-models')
+const dataOrders = require('../../models/order-model')
 const systemConfig = require('../../config/system')
 const PATH_ADMIN = systemConfig.prefixAdmin;
 
@@ -17,6 +18,9 @@ module.exports.authLogin = async (req, res, next) => {
       _id: account.role_id
     }).select('title permissions')
     res.locals.role = role || {}
+    // Đếm tổng số đơn hàng cho sidebar
+    const orderCount = await dataOrders.countDocuments({ deleted: false });
+    res.locals.orderCount = orderCount;
     next()
   }
   else {

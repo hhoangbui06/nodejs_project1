@@ -6,59 +6,82 @@ block main
   +alert-success(3000)
   +alert-error(5000)
 
-  .container.my-3
-    .row
-      .col-12
-        +box-head(title)
-    .row
-      .col-12
-        div(class="alert alert-success")
-          | Cảm ơn bạn đã tin tưởng lựa chọn chúng tôi. 
-          | Đơn hàng của bạn sẽ được xử lý trong thời gian sớm nhất!
-    if(order)
-      .row
-        .col-12
-          h4(class="mb-2") Thông tin cá nhân
-            table(class="table table-bordered")
-              tbody
-                tr
-                  td Họ tên
-                  td 
-                    b #{order.userInfo.fullName}
-                tr
-                  td Số điện thoại
-                  td
-                    b #{order.userInfo.phone}
-                tr
-                  td Địa chỉ
-                  td
-                    b #{order.userInfo.address}
-      .row
-        .col-12
-          h4(class="mb-2") Thông tin đơn hàng
-          table(class="table table-bordered")
-            thead
-              tr
-                th STT
-                th Ảnh
-                th Tên
-                th Giá
-                th Số lượng
-                th Tổng tiền
-            tbody
-              if(order.products.length>0)
-                each item, index in order.products
-                  tr
-                    td #{index+1}
-                    td
-                      img(
-                        src=item.productInfo.thumbnail
-                        alt=item.productInfo.title
-                        width="80px"
-                      )
-                    td #{item.productInfo.title}
-                    td #{item.price}
-                    td #{item.quantity}
-                    td #{item.totalPrice} $
-          if(order.products.length>0)
-            h3(class="text-right") Tổng đơn hàng: #{order.totalPrice} $
+  .order-success-page
+    .container.my-4
+      //- Success Banner
+      .order-success-banner.text-center.mb-4
+        .order-success-icon
+          span ✓
+        h2.order-success-title Đặt hàng thành công!
+        p.order-success-subtitle Cảm ơn bạn đã tin tưởng lựa chọn chúng tôi. Đơn hàng của bạn sẽ được xử lý trong thời gian sớm nhất!
+
+      if(order)
+        .row
+          //- User Info Card
+          .col-lg-4.col-md-5.mb-4
+            .order-info-card
+              .order-info-card-header
+                i 
+                span  Thông tin người nhận
+              .order-info-card-body
+                .order-info-item
+                  .order-info-label Họ tên
+                  .order-info-value #{order.userInfo.fullName}
+                .order-info-item
+                  .order-info-label Số điện thoại
+                  .order-info-value #{order.userInfo.phone}
+                .order-info-item
+                  .order-info-label Địa chỉ
+                  .order-info-value #{order.userInfo.address}
+
+          //- Order Products Card
+          .col-lg-8.col-md-7.mb-4
+            .order-info-card
+              .order-info-card-header
+                span  Chi tiết đơn hàng
+              .order-info-card-body.p-0
+                .table-responsive
+                  table.order-table
+                    thead
+                      tr
+                        th.text-center STT
+                        th Sản phẩm
+                        th.text-center Đơn giá
+                        th.text-center Số lượng
+                        th.text-right Tổng tiền
+                    tbody
+                      if(order.products.length>0)
+                        each item, index in order.products
+                          tr
+                            td.text-center #{index+1}
+                            td
+                              .order-product-cell
+                                .order-product-img
+                                  if item.productInfo && item.productInfo.thumbnail
+                                    img(
+                                      src=item.productInfo.thumbnail
+                                      alt=(item.productInfo && item.productInfo.title) || "Sản phẩm"
+                                    )
+                                  else
+                                    .order-product-img-placeholder 
+                                .order-product-name
+                                  if item.productInfo && item.productInfo.title
+                                    | #{item.productInfo.title}
+                                  else
+                                    em.text-muted Sản phẩm không còn tồn tại
+                            td.text-center #{item.priceNew} $
+                            td.text-center #{item.quantity}
+                            td.text-right
+                              b #{item.totalPrice} $
+                      else
+                        tr
+                          td(colspan="5")
+                            .text-center.py-3 Không có sản phẩm nào trong đơn hàng
+
+                if(order.products.length>0)
+                  .order-total-bar
+                    span Tổng đơn hàng:
+                    span.order-total-amount #{order.totalPrice} $
+
+        .text-center.mt-3.mb-5
+          a.btn.btn-success.btn-lg(href="/") ← Tiếp tục mua sắm

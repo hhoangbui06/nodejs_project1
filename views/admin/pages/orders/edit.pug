@@ -1,0 +1,113 @@
+extends ../../layouts/default.pug
+include ../../mixins/alert.pug
+
+block main
+  +alert-success(3000)
+  +alert-error(5000)
+
+  .admin-order-page
+    if order
+      .admin-order-header
+        h1.admin-order-title Chỉnh sửa đơn hàng
+        .admin-order-id ##{order._id}
+
+      form(
+        action=`${prefixAdmin}/orders/edit/${order._id}?_method=PATCH`
+        method="POST"
+      )
+        .row
+          //- Thông tin khách hàng
+          .col-md-5.mb-3
+            .admin-order-card
+              .admin-order-card-header
+                span Thông tin khách hàng
+              .admin-order-card-body
+                .form-group
+                  label(for="fullName") Họ tên
+                  input.form-control(
+                    type="text"
+                    id="fullName"
+                    name="fullName"
+                    value=order.userInfo && order.userInfo.fullName || ""
+                    required
+                  )
+                .form-group
+                  label(for="phone") Số điện thoại
+                  input.form-control(
+                    type="text"
+                    id="phone"
+                    name="phone"
+                    value=order.userInfo && order.userInfo.phone || ""
+                    required
+                  )
+                .form-group
+                  label(for="address") Địa chỉ
+                  textarea.form-control(
+                    id="address"
+                    name="address"
+                    rows="3"
+                    required
+                  ) #{order.userInfo && order.userInfo.address || ""}
+
+          //- Danh sách sản phẩm
+          .col-md-7.mb-3
+            .admin-order-card
+              .admin-order-card-header
+                span Sản phẩm trong đơn hàng
+              .admin-order-card-body.p-0
+                if order.products && order.products.length > 0
+                  .table-responsive
+                    table.table.table-sm
+                      thead
+                        tr
+                          th Sản phẩm
+                          th.text-center Đơn giá
+                          th.text-center(style="width:100px") Số lượng
+                          th.text-right Thành tiền
+                          th.text-center Xóa
+                      tbody
+                        each item, index in order.products
+                          tr
+                            td
+                              .admin-product-cell
+                                if item.productInfo && item.productInfo.thumbnail
+                                  .admin-product-thumb
+                                    img(src=item.productInfo.thumbnail alt=item.productInfo.title || "")
+                                else
+                                  .admin-product-thumb.placeholder
+                                .admin-product-name
+                                  if item.productInfo && item.productInfo.title
+                                    | #{item.productInfo.title}
+                                  else
+                                    em.text-muted Sản phẩm không tồn tại
+                            td.text-center #{item.priceNew} $
+                            td.text-center
+                              input.form-control.form-control-sm.text-center(
+                                type="number"
+                                name="quantities"
+                                value=item.quantity
+                                min="1"
+                                style="width:70px;margin:0 auto"
+                              )
+                            td.text-right
+                              b #{item.totalPrice} $
+                            td.text-center
+                              a.btn.btn-outline-danger.btn-sm(
+                                href=`${prefixAdmin}/orders/remove-product/${order._id}/${item.product_id}?_method=PATCH`
+                                onclick="return confirm('Xóa sản phẩm này khỏi đơn hàng?')"
+                                title="Xóa sản phẩm"
+                              ) ✕
+                else
+                  .admin-order-empty
+                    p Không có sản phẩm nào
+
+        //- Nút hành động
+        .admin-order-actions-bar.mb-4
+          a.btn.btn-secondary(href=`${prefixAdmin}/orders/detail/${order._id}`) ← Quay lại
+          button.btn.btn-success.ml-2(type="submit") Lưu thay đổi
+
+    else
+      .admin-order-empty
+        .empty-icon
+        h3 Không tìm thấy đơn hàng
+        a.btn.btn-secondary(href=`${prefixAdmin}/orders`) ← Quay lại danh sách

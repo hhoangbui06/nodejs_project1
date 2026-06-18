@@ -3,6 +3,9 @@
         ul
             li
               a(href= prefixAdmin + '/dashboard') Dashboard
+            if (role.permissions.includes('order_views'))
+              li
+                a(href=prefixAdmin+'/orders') Order (#{orderCount})
             if(role.permissions.includes('product_views'))
               li
                 a(href= prefixAdmin + '/products') Product
@@ -20,3 +23,5 @@
               a(href= prefixAdmin + '/accounts') Accounts
             li 
               a(href=prefixAdmin + '/bin') Recycle Bin
+            li
+              a(href=prefixAdmin+'/settings/general') Settings 

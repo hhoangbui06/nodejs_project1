@@ -1,0 +1,78 @@
+extends ../../layouts/default.pug
+include ../../mixins/alert.pug
+include ../../mixins/formatDateTime.pug
+
+block main
+  +alert-success(3000)
+  +alert-error(5000)
+
+  .admin-order-page
+    .admin-order-header
+      h1.admin-order-title Danh sách đơn hàng
+      .admin-order-stats
+        .admin-order-stat-badge
+          h3.stat-number <b>#{records.length} đơn hàng</b>
+
+    .admin-order-card
+      .admin-order-card-header
+        span Tất cả đơn hàng
+      .admin-order-card-body
+        if(records.length>0)
+          .table-responsive
+            table.table.table-hover.table-sm
+              thead
+                tr
+                  th.text-center STT
+                  th Khách hàng
+                  th Liên hệ
+                  th.text-center Sản phẩm
+                  th.text-right Tổng tiền
+                  th Ngày tạo
+                  th.text-center Hành động
+              tbody
+                each item, index in records
+                  tr
+                    td.text-center #{index+1}
+                    td
+                      .order-customer-info
+                        .order-customer-name #{item.userInfo && item.userInfo.fullName || "Không xác định"}
+                        .order-customer-address <i>(#{item.userInfo && item.userInfo.address || ""})</i>
+                    td
+                      .order-customer-phone #{item.userInfo && item.userInfo.phone || ""}
+                    td.text-center
+                      span.order-product-count #{item.products && item.products.length || 0}
+                    td.text-right
+                      b.order-price #{item.totalPrice || 0} $
+                    td
+                      .order-date
+                        +formatDateTime(item.createdAt)
+                    td.text-center
+                      .order-actions
+                        a.btn.btn-info.btn-sm(
+                          href=`${prefixAdmin}/orders/detail/${item._id}`
+                          title="Chi tiết"
+                        ) Chi tiết
+                        if(role.permissions.includes('order_edit'))
+                          a.btn.btn-warning.btn-sm(
+                            href=`${prefixAdmin}/orders/edit/${item._id}`
+                            title="Chỉnh sửa"
+                          ) Sửa
+                        if(role.permissions.includes('order_delete'))
+                          button.btn.btn-danger.btn-sm(
+                            data-id=item._id
+                            button-order-delete
+                            title="Xóa"
+                          ) Xóa
+        else
+          .admin-order-empty
+            .empty-icon 
+            p Chưa có đơn hàng nào
+
+    form(
+      method="POST"
+      action=""
+      data-path=`${prefixAdmin}/orders/delete`
+      form-order-delete
+    )
+
+  script(src='/admin/js/order.js')

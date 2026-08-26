@@ -10,7 +10,7 @@ block main
   form(
     action=`${prefixAdmin}/settings/general?_method=PATCH`
     method="POST"
-    ectype="multipart/form-data"
+    enctype="multipart/form-data"
   )
     div(class="form-group")
       label(for="websiteName") Tên website
@@ -18,9 +18,13 @@ block main
         type="text"
         class="form-control"
         id="websiteName"
+        name="websiteName"
+        value=settings.websiteName||""
       )
     div(class="form-group" upload-image)
       label(for="logo") Logo
+      button(id="clear-input-image" class='btn-hidden' type='button') &times;
+
       input(
         type="file"
         class="form-control-file"
@@ -30,7 +34,7 @@ block main
         upload-image-input
       )
       img(
-        src=""
+        src=settings.logo||""
         class="image-preview"
         upload-image-preview
       )
@@ -41,6 +45,7 @@ block main
         class="form-control"
         id="phone"
         name="phone"
+        value=settings.phone||""
       )
     div(class="form-group")
       label(for="email") Email
@@ -49,6 +54,7 @@ block main
         class="form-control"
         id="email"
         name="email"
+        value=settings.email||""
       )
     div(class="form-group")
       label(for="address") Địa chỉ
@@ -57,6 +63,7 @@ block main
         class="form-control"
         id="address"
         name="address"
+        value=settings.address||""
       )
     div(class="form-group")
       label(for="copyright") Copyright
@@ -65,6 +72,7 @@ block main
         class="form-control"
         id="copyright"
         name="copyright"
+        value=settings.copyright||""
       )
     div(class="form-group")
       button(

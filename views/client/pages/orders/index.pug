@@ -21,7 +21,7 @@ block main
                 th.text-center Số sản phẩm
                 th.text-right Tổng tiền
                 th Ngày đặt
-                th.text-center Hạnh động
+                th.text-center Hành động
             tbody
               each order, index in orders
                 tr
@@ -34,7 +34,7 @@ block main
                     if order.createdAt
                       | #{new Date(order.createdAt).toLocaleDateString('vi-VN')}
                   td.text-center
-                    a.btn.btn-info.btn-sm(href=`/orders/detail/${order._id}`) Chi tiet
+                    a.btn.btn-info.btn-sm(href=`/orders/detail/${order._id}`) Chi tiết
         else
           .text-center.py-4
             h4 Bạn chưa có đơn hàng nào!

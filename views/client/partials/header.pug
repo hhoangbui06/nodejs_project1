@@ -4,7 +4,11 @@ header.header
     .row.align-items-center
       .col-3
         .inner-logo
-          a(href="/" style="font-size:36px;font-weight:600;background: linear-gradient(to right, red, blue);-webkit-background-clip: text;-webkit-text-fill-color: transparent;" id="logo") hhoang Shop
+          a(href="/" id="logo" aria-label=settingGeneral.websiteName || "Trang chủ")
+            if settingGeneral.logo
+              img(src=settingGeneral.logo alt=settingGeneral.websiteName || "Logo website")
+            else
+              span=settingGeneral.websiteName || "hhoang Shop"
       .col-5
         form(
           action="/search"

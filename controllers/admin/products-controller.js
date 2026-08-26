@@ -167,14 +167,30 @@ module.exports.createItem = async (req, res) => {
 }
 
 module.exports.editItem = async (req, res) => {
-  let categories = await dataCategories.find({ deleted: false });
-  let newCategories = createTree.create(categories);
-  let editProduct = await dataProducts.findOne({ _id: req.params.id, deleted: false })
-  res.render('admin/pages/products/edit.pug', { title: "Chỉnh sửa sản phẩm", product: editProduct, records: newCategories })
+  try {
+    let categories = await dataCategories.find({ deleted: false });
+    let newCategories = createTree.create(categories);
+    let editProduct = await dataProducts.findOne({ _id: req.params.id})
+    if (!editProduct || editProduct.deleted) {
+      req.flash('error', 'Sản phẩm không tồn tại hoặc đã bị xóa!');
+      res.redirect(`${prefixAdmin}/products`);
+      return;
+    }
+    res.render('admin/pages/products/edit.pug', { title: "Chỉnh sửa sản phẩm", product: editProduct, records: newCategories })
+  } catch (error) {
+    req.flash('error', 'Có lỗi xảy ra!');
+    res.redirect(`${prefixAdmin}/products`);
+  }
 }
 module.exports.editProduct = async (req, res) => {
   try {
     let id = req.params.id;
+    let editProduct = await dataProducts.findOne({ _id: id });
+    if (!editProduct || editProduct.deleted) {
+      req.flash('error', 'Sản phẩm không tồn tại hoặc đã bị xóa!');
+      res.redirect(`${prefixAdmin}/products`);
+      return;
+    }
     req.body.price = Number(req.body.price)
     req.body.discountPercentage = Number(req.body.discountPercentage)
     req.body.stock = Number(req.body.stock)
@@ -189,7 +205,7 @@ module.exports.editProduct = async (req, res) => {
     req.flash('success', 'Cập nhật sản phẩm thành công!')
   }
   catch (err) {
-    res.flash('error', 'Cập nhật thất bại!')
+    req.flash('error', 'Cập nhật thất bại!')
   }
   res.redirect(req.headers.referer)
 }

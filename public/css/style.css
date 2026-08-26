@@ -53,8 +53,30 @@ body {
 }
 
 .header .inner-logo #logo {
-    display: inline-block;
+    display: flex;
+    align-items: center;
+    width: 100%;
+    height: 58px;
+    overflow: hidden;
+    text-decoration: none;
     transition: var(--transition-smooth);
+}
+
+.header .inner-logo #logo img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    max-width: 220px;
+    object-fit: contain;
+    object-position: left center;
+}
+
+.header .inner-logo #logo span {
+    color: var(--text-dark);
+    font-size: 22px;
+    font-weight: 800;
+    line-height: 1.1;
+    overflow-wrap: anywhere;
 }
 
 .header .inner-logo #logo:hover {
@@ -808,6 +830,10 @@ a:hover {
    RESPONSIVE DESIGN SYSTEM
    ============================================= */
 @media (max-width: 991px) {
+    .header .inner-logo #logo {
+        height: 52px;
+    }
+
     .header .inner-menu > ul {
         justify-content: center;
         margin-top: 15px;
@@ -818,6 +844,18 @@ a:hover {
 }
 
 @media (max-width: 768px) {
+    .header .inner-logo #logo {
+        height: 48px;
+    }
+
+    .header .inner-logo #logo img {
+        max-width: 180px;
+    }
+
+    .header .inner-logo #logo span {
+        font-size: 18px;
+    }
+
     .order-success-banner {
         padding: 30px 15px;
     }

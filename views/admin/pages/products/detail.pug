@@ -6,7 +6,7 @@ block main
     -if (product.price)
         div(class='mb-4') Giá: <b>#{product.price}$</b>
     -if (product.discountPercentage)
-        div(class='mb-4') Giảm giá: <b>#{product.discountPercentage}</b>
+        div(class='mb-4') Giảm giá: <b>#{product.discountPercentage}%</b>
     -if (product.stock)
         div(class='mb-4') Còn lại: <b>#{product.stock}</b>
     -if (product.thumbnail)
@@ -26,6 +26,7 @@ block main
         div(class='mb-4') Vị trí: <b>#{product.position}</b>
     -if (product.description)
         div(class='mb-4') Mô tả sản phẩm: !{product.description}
-    a(href=`${prefixAdmin}/products/edit/${product._id}` class='btn btn-info') Chỉnh sửa
+    if (!product.deleted)
+        a(href=`${prefixAdmin}/products/edit/${product._id}` class='btn btn-info') Chỉnh sửa
     
     script(src='/admin/js/product.js')

@@ -9,11 +9,13 @@ const userRoute = require('./user-route')
 const orderRoute = require('./order-route')
 const userMiddleware = require('../../middlewares/client/user-middleware')
 const authMiddleware = require('../../middlewares/client/auth-middleware')
+const settingGeneralMiddleware=require('../../middlewares/client/settings-middleware')
 
 module.exports = (app) => {
   app.use(headerMiddleware.getCategory)
   app.use(userMiddleware.loginUser)
   app.use(cartMiddleware.checkCart)
+  app.use(settingGeneralMiddleware.settingGeneral)
   app.use('/users', userRoute)
   app.use('/', homepageRoutes)
   app.use('/products', productRoutes)

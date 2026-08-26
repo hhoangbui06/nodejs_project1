@@ -45,6 +45,12 @@ app.use('/tinymce', express.static(path.join(__dirname, 'node_modules', 'tinymce
 
 routeClient(app)
 routeAdmin(app)
+app.use((req,res)=>{
+  res.render("client/pages/errors/404", {
+    pageTitle:"404 Not Found"
+  }
+  )
+})
 
 app.listen(port, () => {
   console.log(`Welcome port ${port}`);

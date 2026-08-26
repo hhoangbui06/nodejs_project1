@@ -5,34 +5,46 @@ block main
   +alert-success(3000)
   +alert-error(5000)
 
-  .container-fluid.py-3
-    h1.mb-4 Dashboard
-
-    .row
-      .col-md-3.mb-3
-        .card.text-white.bg-primary
-          .card-body
-            h5.card-title Đơn hàng
-            h2.card-text #{orderCount}
-            p.card-text Tổng số đơn hàng
-
-      .col-md-3.mb-3
-        .card.text-white.bg-success
-          .card-body
-            h5.card-title Sản phẩm
-            h2.card-text #{productCount}
-            p.card-text Tổng số sản phẩm
-
-      .col-md-3.mb-3
-        .card.text-white.bg-info
-          .card-body
-            h5.card-title Tài khoản
-            h2.card-text #{accountCount}
-            p.card-text Tổng số tài khoản
-
-      .col-md-3.mb-3
-        .card.text-white.bg-warning
-          .card-body
-            h5.card-title Doanh thu
-            h2.card-text #{totalRevenue} $
-            p.card-text Tổng doanh thu
+  .row.mt-4
+    .col-12
+      .card-mb-4
+        .card-header Thông tin tài khoản
+        .card-body
+          if(user.avatar)
+            img(src=user.avatar style="height: 100px; margin-bottom: 15px;")
+          if(user.fullName)
+            p Họ tên: <b>#{user.fullName}</b>
+          if(user.email)
+            p Email: <b>#{user.email}</b>
+          if(user.phone)
+            p Số điện thoại: <b>#{user.phone}</b>
+          if(role.title)
+            p Quyền người dùng: <b>#{role.title}</b>
+    .col-6
+      .card-mb-4
+        .card-header Danh mục sản phẩm
+        .card-body
+          p Số lượng: <b>#{categoryInfo.total}</b>
+          p Hoạt động: <b>#{categoryInfo.active}</b>
+          p Dừng hoạt động: <b>#{categoryInfo.inactive}</b>
+    .col-6
+      .card-mb-4
+        .card-header Sản phẩm
+        .card-body
+          p Số lượng: <b>#{productInfo.total}</b>
+          p Hoạt động: <b>#{productInfo.active}</b>
+          p Dừng hoạt động: <b>#{productInfo.inactive}</b>
+    .col-6
+      .card-mb-4
+        .card-header Tài khoản admin
+        .card-body
+          p Số lượng: <b>#{accountInfo.total}</b>
+          p Hoạt động: <b>#{accountInfo.active}</b>
+          p Dừng hoạt động: <b>#{accountInfo.inactive}</b>
+    .col-6
+      .card-mb-4
+        .card-header Tài khoản client
+        .card-body
+          p Số lượng: <b>#{userInfo.total}</b>
+          p Hoạt động: <b>#{userInfo.active}</b>
+          p Dừng hoạt động: <b>#{userInfo.inactive}</b>
